@@ -105,3 +105,11 @@ bb trace
 
 Dual-licensed under your choice of MIT or Apache 2.0. See [LICENSE](LICENSE)
 for full terms.
+
+---
+
+<div align="center">
+
+[![Necrometer](necrometer.svg)](https://necrometer.dev/?u=openOODA)
+
+</div>
