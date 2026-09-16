@@ -163,7 +163,7 @@ pub fn verify_surface_cli_watch(p: &ProcessCap, fs: &FsReadCap) -> Result[Int, S
     return Ok(0);
 }
 
-pub fn verify_surface_cli(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap) -> Result[Int, String] {
+pub fn verify_surface_cli(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, time: &TimeCap, thread: &ThreadCap) -> Result[Int, String] {
     let r_help: Result[Int, String] = verify_surface_cli_help();
     if r_help.is_err() { return r_help; }
 
@@ -179,7 +179,7 @@ pub fn verify_surface_cli(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: 
     let mut d_bad: List[String] = list_new();
     d_bad = list_push(d_bad, "invalid_subcommand_test");
     let r_disp: Result[Int, String] = verify_cli_must_fail(
-        cli_dispatch(p, fs, fw, env, d_bad),
+        cli_dispatch(p, fs, fw, env, time, thread, d_bad),
         "dispatch unknown subcommand"
     );
     if r_disp.is_err() { return r_disp; }
@@ -236,11 +236,11 @@ pub fn verify_surface() -> Result[Int, String] {
     return Ok(0);
 }
 
-pub fn verify_surface_run(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap) -> Result[Int, String] {
+pub fn verify_surface_run(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, time: &TimeCap, thread: &ThreadCap) -> Result[Int, String] {
     let r_surf: Result[Int, String] = verify_surface();
     if r_surf.is_err() { return r_surf; }
 
-    let r_cli: Result[Int, String] = verify_surface_cli(p, fs, fw, env);
+    let r_cli: Result[Int, String] = verify_surface_cli(p, fs, fw, env, time, thread);
     if r_cli.is_err() { return r_cli; }
 
     return Ok(0);
