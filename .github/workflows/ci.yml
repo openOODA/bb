@@ -17,6 +17,8 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      OO_LIST_AMBIENT_QUOTA: "8589934592"
     steps:
       - name: checkout bb
         uses: actions/checkout@v4
@@ -53,6 +55,8 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    env:
+      OO_LIST_AMBIENT_QUOTA: "8589934592"
     steps:
       - name: checkout bb
         uses: actions/checkout@v4
@@ -108,6 +112,8 @@ jobs:
     needs: [test]
     if: always()
     runs-on: ubuntu-latest
+    env:
+      OO_LIST_AMBIENT_QUOTA: "8589934592"
     steps:
       - name: checkout bb
         uses: actions/checkout@v4
@@ -137,9 +143,9 @@ jobs:
           set -euo pipefail
           mkdir -p "$HOME/.openooda/bin"
           curl -fsSL -o "$HOME/.openooda/bin/bb" \
-            "https://github.com/openOODA/bb/releases/download/v0.0.12/bb-linux-x86_64"
+            "https://github.com/openOODA/bb/releases/download/v0.0.15/bb-linux-x86_64"
           curl -fsSL -o "$HOME/.openooda/bin/bb.sha256" \
-            "https://github.com/openOODA/bb/releases/download/v0.0.12/bb-linux-x86_64.sha256"
+            "https://github.com/openOODA/bb/releases/download/v0.0.15/bb-linux-x86_64.sha256"
           expected=$(cut -d' ' -f1 "$HOME/.openooda/bin/bb.sha256")
           actual=$(sha256sum "$HOME/.openooda/bin/bb" | cut -d' ' -f1)
           test "$expected" = "$actual" || { echo "[bb-gate FAIL] sha256 mismatch"; exit 1; }
