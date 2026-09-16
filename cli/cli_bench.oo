@@ -6,7 +6,7 @@
 //
 // Beats:
 //   1. Parse argv for the target .oo file and optional --run flag.
-//   2. find_oodac locates the compiler; refuse_cli enforces no-shell invocation.
+//   2. compiler_locate reads OODA_COMPILER or OODAC_BIN; compiler_path_ok refuses shell metacharacters.
 //   3. Run `oodac check <path>`, time the call, print ms.
 //   4. If --run, also build and exec, then print the run ms.
 
@@ -71,7 +71,7 @@ pub fn cli_run_bench(p: &ProcessCap, fs: &FsReadCap, env: &EnvCap, time: &TimeCa
     println("blackbox bench: check " + path + " " + ms.to_string() + "ms");
     if do_run {
         let bout: String = path + ".bench.bin";
-        let br: Result<String, String> = sys_exec(p, oodac, "build", "--backend", "c", path, "-o", bout);
+        let br: Result[String, String] = compiler_run_build(p, oodac, path, bout);
         if br.is_err() {
             println("blackbox bench: build failed " + path);
             process_exit(1);

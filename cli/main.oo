@@ -1,6 +1,6 @@
 // # BB Command Line Interface
 //
-// Logline: Entry point. Dispatches autopsy, diff, trace, and the Phase 6 verbs (digest/health/bench/sandbox/swarm) and exits fail-closed.
+// Logline: Entry point. Dispatches autopsy, diff, trace, and digest/health/bench/sandbox/swarm and exits fail-closed.
 //
 // Setup: Bound by ProcessCap, FsReadCap, FsWriteCap, EnvCap, TimeCap, ThreadCap.
 //

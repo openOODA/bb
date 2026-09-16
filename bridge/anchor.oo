@@ -2,7 +2,7 @@
 //
 // Logline: Re-exports process runner, directory watcher, MCP bridge, and MCP server.
 //
-// Setup: Interfaces blackbox flight sensors with external processes and AI agent tool ecosystems.
+// Setup: Interfaces process execution, directory watch, and MCP tools with the bb CLI.
 //
 // Beats:
 //   1. Re-export ProcessCap process execution and tracing runner.

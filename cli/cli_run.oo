@@ -10,7 +10,7 @@
 //   3. Diff locates oodac, runs tokens, and exits nonzero on drift.
 //   4. Trace reads flight log; mcp runs standalone stdio server.
 //   5. Heal and run delegate to cli_heal and cli_run_cmd helpers.
-//   6. digest/health/bench/sandbox/swarm delegate to cli_dispatch_more (Phase 6).
+//   6. digest/health/bench/sandbox/swarm delegate to cli_dispatch_more.
 
 import "autopsy/report_formatter.oo";
 import "autopsy/self_heal.oo";

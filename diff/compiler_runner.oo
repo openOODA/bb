@@ -1,14 +1,14 @@
 // # Compiler Stage Runner
 //
-// Logline: Locates oodac from env and runs live tokens, check, emit-c, or build.
+// Logline: Locates oodac from env and runs live tokens, check, em, or build.
 //
 // Setup: OODA_COMPILER or OODAC_BIN only. No PATH hunt. Residual stages fail closed.
 //
 // Beats:
 //   1. Refuse empty, `..`, bare names, and shell metacharacters.
 //   2. Require the compiler path to exist under FsReadCap.
-//   3. Allow tokens, check, emit-c, and build. Residual names fail closed.
-//   4. Capture child stdout from sys_exec.
+//   3. Allow tokens, check, em, and build. emit-c is named residual (not ok).
+//   4. Capture child stdout from sys_exec. Live stages never sys_exec emit-c.
 
 pub fn compiler_path_ok(p: String) -> Bool {
     if chars_len(p) == 0 { return false; }
@@ -54,7 +54,7 @@ pub fn compiler_locate(fs: &FsReadCap, env: &EnvCap) -> Result[String, String] {
 pub fn compiler_stage_ok(stage: String) -> Bool {
     if stage == "tokens" { return true; }
     if stage == "check" { return true; }
-    if stage == "emit-c" { return true; }
+    if stage == "emit-c" { return false; }
     if stage == "build" { return true; }
     if stage == "em" { return true; }
     return false;

@@ -46,7 +46,7 @@ runs `tokens`, and exits nonzero when two-file token dumps drift.
 `heal [path] [--json]` parses autopsy, applies the patch guard under
 `FsWriteCap`, validates via `oodac check`, rolls back on failure, and prints
 machine-readable `{"ok":...}` with `--json`.
-`inspect` runs live `tokens`, `check`, `emit-c`, or `build` and prints the child text, including gcc diagnostics.
+`inspect` runs live `tokens`, `check`, or `build` and prints the child text, including compiler diagnostics. `emit-c` is named residual (`ok:false`, exit 2).
 `trace` prints `.blackbox/flight.json` when that file exists and is non-empty; otherwise it prints `ERR`.
 
 ## CLI Usage
@@ -67,9 +67,8 @@ bb diff path/to/file.oo
 # Compare two files; exits nonzero when token dumps drift (CI gate)
 bb diff path/to/before.oo path/to/after.oo
 
-# Run a live oodac stage (tokens, check, emit-c, or build)
+# Run a live oodac stage (tokens, check, or build). emit-c is residual (exit 2).
 bb inspect check path/to/file.oo
-bb inspect emit-c path/to/file.oo
 bb inspect build path/to/file.oo
 
 # Print a written flight log, or ERR if none exists

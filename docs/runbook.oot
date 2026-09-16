@@ -1,7 +1,7 @@
-# BLACKBOX — Agent Runbook
-File: blackbox/docs/runbook.oot
+# BB — Agent Runbook
+File: bb/docs/runbook.oot
 
-When to reach for each blackbox command while building, debugging, or gating.
+When to reach for each bb command while building, debugging, or gating.
 All commands fail closed (nonzero exit plus `ERR` line) on bad inputs.
 Compiler resolution is OODA_COMPILER else OODAC_BIN; reads and temp files
 stay under OODA_FS_READDIR/OODA_FS_WRITEDIR.
@@ -11,14 +11,14 @@ stay under OODA_FS_READDIR/OODA_FS_WRITEDIR.
 Rerun it under the recorder to capture the failure; success writes nothing:
 
 ```sh
-blackbox run --record .blackbox/flight.json -- <cmd> [args]
+bb run --record .blackbox/flight.json -- <cmd> [args]
 ```
 
 Read the capsule (`command`, `exit_status`, truncated `output`, 64KiB cap).
 For a one-turn root-cause diagnosis from a capsule or crash report:
 
 ```sh
-blackbox autopsy <autopsy.json>
+bb autopsy <autopsy.json>
 ```
 
 ## A diagnostic names a fixable defect
@@ -26,10 +26,10 @@ blackbox autopsy <autopsy.json>
 Apply the autopsy patch guard, re-run `oodac check`, roll back on failure:
 
 ```sh
-blackbox heal <autopsy.json>
+bb heal <autopsy.json>
 ```
 
-The report is `{"ok":...}` JSON. `--dry-run` previews (see `blackbox help`).
+The report is `{"ok":...}` JSON. `--dry-run` previews (see `bb help`).
 Never hand-apply a patch the healer refuses: a rollback means the guard
 did not verify.
 
@@ -38,23 +38,24 @@ did not verify.
 Gate on token drift between the old and new dumps:
 
 ```sh
-blackbox diff <before.oo> <after.oo>
+bb diff <before.oo> <after.oo>
 ```
 
 Exit nonzero means drift. Identical files print zero-drift status.
-Lowering work additionally uses `blackbox diff_em` (tokens vs `.em`
+Lowering work additionally uses `bb diff-em` (tokens vs `.em`
 bytecode) to catch lowering regressions.
 
 ## From an MCP client instead of the shell
 
-`blackbox mcp --stdio` serves four tools: `blackbox_autopsy` (diagnosis
+`bb mcp --stdio` serves four tools: `blackbox_autopsy` (diagnosis
 from a capsule path), `blackbox_diff` / `blackbox_diff_em` (drift checks
 on a file), `blackbox_trace` (format a flight log). Same fail-closed
 semantics as the CLI.
 
 ## Inspect and replay
 
-`blackbox inspect` runs live tokens/check/emit-c/build on one file and
-prints the stage text (compiler diagnostics included). `blackbox trace`
-prints a written `.blackbox/flight.json`; `blackbox replay` and
-`blackbox watch` cover recorded flights and live directories.
+`bb inspect` runs live tokens/check/build on one file and
+prints the stage text (compiler diagnostics included). `emit-c`
+is named residual (`ok:false`, exit 2). `bb trace`
+prints a written `.blackbox/flight.json`; `bb replay` and
+`bb watch` cover recorded flights and live directories.

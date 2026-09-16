@@ -2,7 +2,7 @@
 //
 // Logline: Print liveness probe: env, oodac path, OODACODEX, .ooda-cache writability, Landlock support.
 //
-// Setup: FsReadCap probes paths. EnvCap reads tokens. ProcessCap probes seccomp via /proc. No shell.
+// Setup: FsReadCap probes paths including /proc seccomp. EnvCap reads tokens. No shell.
 //
 // Beats:
 //   1. Print the ok line for the binary itself.

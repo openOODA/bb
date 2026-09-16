@@ -2,7 +2,7 @@
 //
 // Logline: Synthesizes .em module representation and diffs pre-lowered AST tokens against emitted EM bytecode.
 //
-// Setup: ProcessCap and FsReadCap. Compares AST tokens from oodac against lowered EM bytecode to detect compiler regressions.
+// Setup: ProcessCap. Compares AST tokens from oodac against synthesized EM bytecode to detect dropped symbols.
 //
 // Beats:
 //   1. Generate canonical .em module format from source AST.

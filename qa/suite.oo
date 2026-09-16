@@ -13,7 +13,7 @@
 //   6. Run portable flight capsule pack and replay proofs (qa/capsule_proof.oo).
 //   7. Clean residual artifacts and run real-time crash sentinel daemon proofs (qa/watch_proof.oo).
 //   8. Run Blue Ocean cross-feature E2E lifecycle proofs (qa/e2e_blue_ocean_proof.oo).
-//   9. Run failure auto-record, heal JSON, and diff gate proofs.
+//   9. Run failure auto-record, heal JSON, residual inspect, and diff gate proofs.
 //   10. Print success status and return 0.
 
 import "verify_surface.oo";
@@ -28,6 +28,7 @@ import "qa/compact_proof.oo";
 import "qa/em_proof.oo";
 import "qa/flight_record_proof.oo";
 import "qa/heal_json_proof.oo";
+import "qa/cli_proof.oo";
 import "qa/diff_gate_proof.oo";
 import "qa/ring_buffer_perf_proof.oo";
 import "qa/e2e_blue_ocean_proof.oo";
@@ -106,6 +107,12 @@ pub fn test_run_all(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCa
     if r_hjson.is_err() {
         let e_hjson: String = match r_hjson { Ok(_) => "", Err(m) => m };
         return Err("test: heal json proof failed: " + e_hjson);
+    }
+
+    let r_cli: Result[Int, String] = cli_proof_run(p, fs);
+    if r_cli.is_err() {
+        let e_cli: String = match r_cli { Ok(_) => "", Err(m) => m };
+        return Err("test: cli proof failed: " + e_cli);
     }
 
     let r_dgate: Result[Int, String] = diff_gate_proof_run(p, fs, fw, env);

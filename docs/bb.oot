@@ -1,12 +1,12 @@
-# BLACKBOX — openOODA Flight Recorder and Crash Autopsy Subsystem
-File: blackbox/docs/blackbox.oot
+# BB — openOODA Flight Recorder and Crash Autopsy Subsystem
+File: bb/docs/bb.oot
 
 ## 1. Description and Scope
 
-This document specifies the openOODA blackbox subsystem.
+This document specifies the openOODA bb subsystem.
 The autopsy engine reads autopsy JSON and outputs a one-turn diagnostic report.
 Failing spawned processes auto-persist a bounded flight capsule (command, exit
-status, truncated captured output) to an explicit path via `blackbox run
+status, truncated captured output) to an explicit path via `bb run
 --record <capsule> -- <cmd> [args]`; succeeding processes write nothing.
 The heal command applies an autopsy patch guard under `FsWriteCap`, validates
 with `oodac check`, rolls back on failure, and reports `{"ok":...}` JSON.
@@ -20,7 +20,7 @@ The repository topology follows RFC 0005:
 
 - `anchor.oo`: Root front door re-exporting all subdirectories.
 - `README.md`: Architecture map, logline, and polyrepo table.
-- `VERSION`: Module version string (0.0.3).
+- `VERSION`: Module version string (0.0.12).
 - `record/`: Telemetry schemas, flight event records, and ring buffer.
 - `autopsy/`: Autopsy parser, failure locator, root cause classifier, and report formatter.
 - `diff/`: AST semantic diffing engine and compiler stage runner.
@@ -75,7 +75,7 @@ The bridge subsystem provides bindings for openOODA MCP server integration:
 
 ## 6. Subsystem Invariants
 
-The blackbox subsystem enforces the following constitutional rules:
+The bb subsystem enforces the following constitutional rules:
 
 1. Pure File Laws: All source files use the `.oo` extension. All documents use `.oot`.
 2. Line Limit: Every `.oo` and `.oot` file contains 256 lines or fewer.

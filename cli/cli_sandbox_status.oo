@@ -2,7 +2,7 @@
 //
 // Logline: Inspect active kernel sandbox backend and confinement state.
 //
-// Setup: Reports under SysCap. No shell. Read-only probe.
+// Setup: Read-only probe. No shell.
 //
 // Beats:
 //   1. Refuse unknown flags.

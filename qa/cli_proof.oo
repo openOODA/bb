@@ -2,17 +2,25 @@
 //
 // Logline: Drive the same locate, autopsy, and trace functions the CLI uses.
 //
-// Setup: FsReadCap. Fixture is blackbox/qa/autopsy_null.json. No PATH hunt.
+// Setup: FsReadCap. Fixture is qa/autopsy_null.json (bb/ or blackbox/ prefix). No PATH hunt.
 //
 // Beats:
 //   1. Missing compiler env is ERR.
-//   2. Residual compiler stages that oodac does not dispatch are refused.
+//   2. Residual compiler stages, including named emit-c, are refused (ok:false).
 //   3. On-disk autopsy includes root_cause and failure_coordinate; double-run identical.
 //   4. Missing and `..` autopsy paths fail closed. Empty trace is ERR.
 
 import "diff/compiler_runner.oo";
 import "bridge/dir_watcher.oo";
 import "cli/cli_run.oo";
+
+fn cli_qa_file(fs: &FsReadCap, name: String) -> String {
+    let p1: String = "blackbox/qa/" + name;
+    if path_exists(fs, p1) { return p1; }
+    let p2: String = "bb/qa/" + name;
+    if path_exists(fs, p2) { return p2; }
+    return "qa/" + name;
+}
 
 fn proof_compiler_missing(fs: &FsReadCap) -> Result[Int, String] {
     let r: Result[String, String] = compiler_locate_from(fs, "", "");
@@ -42,17 +50,24 @@ fn proof_residual_stage(p: &ProcessCap) -> Result[Int, String] {
     if compiler_stage_ok("run") { return Err("proof_residual_stage: run must be refused"); }
     if !compiler_stage_ok("tokens") { return Err("proof_residual_stage: tokens must be allowed"); }
     if !compiler_stage_ok("check") { return Err("proof_residual_stage: check must be allowed"); }
-    if !compiler_stage_ok("emit-c") { return Err("proof_residual_stage: emit-c must be allowed"); }
+    if compiler_stage_ok("emit-c") { return Err("proof_residual_stage: emit-c must be residual"); }
     if !compiler_stage_ok("build") { return Err("proof_residual_stage: build must be allowed"); }
-    let r_ast: Result[String, String] = compiler_run_stage(p, "", residual_a, "blackbox/qa/diff_sample.oo");
+    let sample: String = "qa/diff_sample.oo";
+    let r_ast: Result[String, String] = compiler_run_stage(p, "", residual_a, sample);
     if r_ast.is_ok() { return Err("proof_residual_stage: run ast must fail"); }
-    let r_empty: Result[String, String] = compiler_run_stage(p, "", "check", "blackbox/qa/diff_sample.oo");
+    let r_emitc: Result[String, String] = compiler_run_stage(p, "/x/oodac", "emit-c", sample);
+    if r_emitc.is_ok() { return Err("proof_residual_stage: run emit-c must fail"); }
+    let emitc_msg: String = match r_emitc { Ok(_) => "", Err(m) => m };
+    if str_index_of(emitc_msg, "residual stage") < 0 {
+        return Err("proof_residual_stage: emit-c must fail closed as residual");
+    }
+    let r_empty: Result[String, String] = compiler_run_stage(p, "", "check", sample);
     if r_empty.is_ok() { return Err("proof_residual_stage: empty bin must fail"); }
     return Ok(0);
 }
 
 fn proof_autopsy_file(fs: &FsReadCap) -> Result[Int, String] {
-    let path: String = "blackbox/qa/autopsy_null.json";
+    let path: String = cli_qa_file(fs, "autopsy_null.json");
     let r1: Result[String, String] = autopsy_read_report(fs, path, false);
     if r1.is_err() { return Err("proof_autopsy_file: run 1 failed"); }
     let t1: String = match r1 { Ok(s) => s, Err(_) => "" };
@@ -70,7 +85,7 @@ fn proof_autopsy_file(fs: &FsReadCap) -> Result[Int, String] {
 }
 
 fn proof_autopsy_fail_closed(fs: &FsReadCap) -> Result[Int, String] {
-    let miss: Result[String, String] = autopsy_read_report(fs, "blackbox/qa/no_such_autopsy.json", false);
+    let miss: Result[String, String] = autopsy_read_report(fs, cli_qa_file(fs, "no_such_autopsy.json"), false);
     if miss.is_ok() {
         return Err("proof_autopsy_fail_closed: missing file must fail");
     }
@@ -93,8 +108,7 @@ fn proof_trace_empty(fs: &FsReadCap) -> Result[Int, String] {
     return Ok(0);
 }
 
-pub fn main(p: &ProcessCap, fs: &FsReadCap, args: List[String]) -> Result[Int, String] {
-    let _n: Int = list_len(args);
+pub fn cli_proof_run(p: &ProcessCap, fs: &FsReadCap) -> Result[Int, String] {
     let a: Result[Int, String] = proof_compiler_missing(fs);
     if a.is_err() { println("ERR proof_compiler_missing"); return a; }
     let b: Result[Int, String] = proof_residual_stage(p);

@@ -5,7 +5,7 @@
 // Setup: Pure string builder. No caps.
 //
 // Beats:
-//   1. Compose usage text with 17 verbs across 4 categories.
+//   1. Compose usage text for every subcommand.
 //   2. Return the assembled string.
 
 pub fn bb_cli_help() -> String {
@@ -14,7 +14,7 @@ pub fn bb_cli_help() -> String {
     out = out + "  autopsy [path] [--compact]     Parse autopsy JSON and print a 1-turn diagnosis\n";
     out = out + "  diff <file.oo>                 Run oodac tokens (OODA_COMPILER or OODAC_BIN)\n";
     out = out + "  diff-em <file.oo>              Diff pre-lowered tokens against .em bytecode\n";
-    out = out + "  inspect tokens|check|emit-c|build|em <file.oo>  Run a live oodac stage and print child text\n";
+    out = out + "  inspect tokens|check|build|em <file.oo>  Live oodac stage; emit-c residual exit 2\n";
     out = out + "  trace                          Print a written flight log if one exists\n";
     out = out + "  mcp --stdio                    Start standalone JSON-RPC 2.0 MCP server\n";
     out = out + "  heal [path] [--json]           Heal source defect from autopsy coordinates\n";
@@ -31,4 +31,8 @@ pub fn bb_cli_help() -> String {
     out = out + "  version                        Display bb version\n";
     out = out + "  help                           Display this usage guide\n";
     return out;
+}
+
+pub fn cli_help() -> String {
+    return bb_cli_help();
 }

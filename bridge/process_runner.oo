@@ -1,15 +1,14 @@
 // # Process Execution Runner
 //
-// Logline: Spawns target processes under ProcessCap and configures flight recording environment variables.
+// Logline: Spawns target processes under ProcessCap. On failure, process_run_recorded writes a bounded capsule.
 //
-// Setup: Bound by ProcessCap. Invokes child commands with flight sensor hooks.
+// Setup: Bound by ProcessCap. sys_exec captures child text. FsWriteCap only on the recorded path.
 //
 // Beats:
-//   1. Configure flight sensor directory and tracing flags.
-//   2. Spawn child process via sys_exec.
-//   3. Capture standard output, error output, and exit status.
-//   4. Detect abnormal process termination and trigger autopsy workflow.
-//   5. Persist a bounded flight capsule on failure; write nothing on success.
+//   1. Refuse empty commands, empty capsule paths, traversal, and argument gaps.
+//   2. Spawn the child via sys_exec.
+//   3. Return child text on success.
+//   4. On failure, persist a bounded flight capsule and return the captured text as Err.
 
 import "record/flight_record.oo";
 

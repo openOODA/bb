@@ -48,7 +48,7 @@ jobs:
           OODA_FS_READDIR: ${{ github.workspace }}
           OODA_FS_WRITEDIR: ${{ github.workspace }}
         run: |
-          "${OODA_COMPILER}" build --backend c bb/qa/suite.oo -o /tmp/bb_suite
+          "${OODA_COMPILER}" build bb/qa/suite.oo -o /tmp/bb_suite
           /tmp/bb_suite
 
   build:
@@ -85,8 +85,16 @@ jobs:
           OODA_FS_WRITEDIR: ${{ github.workspace }}
         run: |
           mkdir -p dist
-          "${OODA_COMPILER}" build --backend c bb/cli/main.oo -o dist/bb-linux-x86_64
+          "${OODA_COMPILER}" build bb/cli/main.oo -o dist/bb-linux-x86_64
           chmod +x dist/bb-linux-x86_64
+          set +e
+          ./dist/bb-linux-x86_64 inspect emit-c bb/qa/diff_sample.oo > /tmp/bb-inspect-emit-c.out 2>&1
+          rc=$?
+          set -e
+          echo "inspect_emit-c_rc=$rc"
+          cat /tmp/bb-inspect-emit-c.out
+          test "$rc" -eq 2
+          grep -q 'residual' /tmp/bb-inspect-emit-c.out
           (cd dist && sha256sum bb-linux-x86_64 > bb-linux-x86_64.sha256)
           ls -lh dist/
       - name: upload release assets

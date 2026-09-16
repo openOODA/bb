@@ -1,6 +1,6 @@
 // # Token Dump Diffing Engine
 //
-// Logline: Diffs oodac tokens dumps across two files or inspects one file.
+// Logline: Diffs oodac token dumps across two files or inspects one file.
 //
 // Setup: Relies on compiler_runner under ProcessCap. tokens stage only.
 //
