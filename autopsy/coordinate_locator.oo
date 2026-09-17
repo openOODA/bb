@@ -10,7 +10,7 @@
 //   3. Format FailureCoordinate into agent presentation and exact source coordinates.
 //   4. Validate whether a coordinate contains valid non-empty file and line values.
 
-type FailureCoordinate = struct {
+pub type FailureCoordinate = struct {
     file_path: String,
     line_num: Int,
     col_num: Int,
