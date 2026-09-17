@@ -12,7 +12,7 @@
 import "bridge/process_runner.oo";
 
 fn cli_run_cmd_err(msg: String) -> Result[Int, String] {
-    println("ERR " + msg);
+    println("ERR\trun_cmd\t" + msg);
     return Err(msg);
 }
 

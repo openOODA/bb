@@ -110,15 +110,15 @@ fn proof_trace_empty(fs: &FsReadCap) -> Result[Int, String] {
 
 pub fn cli_proof_run(p: &ProcessCap, fs: &FsReadCap) -> Result[Int, String] {
     let a: Result[Int, String] = proof_compiler_missing(fs);
-    if a.is_err() { println("ERR proof_compiler_missing"); return a; }
+    if a.is_err() { println("ERR\tcli_proof\tproof_compiler_missing"); return a; }
     let b: Result[Int, String] = proof_residual_stage(p);
-    if b.is_err() { println("ERR proof_residual_stage"); return b; }
+    if b.is_err() { println("ERR\tcli_proof\tproof_residual_stage"); return b; }
     let c: Result[Int, String] = proof_autopsy_file(fs);
-    if c.is_err() { println("ERR proof_autopsy_file"); return c; }
+    if c.is_err() { println("ERR\tcli_proof\tproof_autopsy_file"); return c; }
     let d: Result[Int, String] = proof_autopsy_fail_closed(fs);
-    if d.is_err() { println("ERR proof_autopsy_fail_closed"); return d; }
+    if d.is_err() { println("ERR\tcli_proof\tproof_autopsy_fail_closed"); return d; }
     let t: Result[Int, String] = proof_trace_empty(fs);
-    if t.is_err() { println("ERR proof_trace_empty"); return t; }
-    println("OK blackbox cli_proof");
+    if t.is_err() { println("ERR\tcli_proof\tproof_trace_empty"); return t; }
+    println("OK\tblackbox\tcli_proof");
     return Ok(0);
 }

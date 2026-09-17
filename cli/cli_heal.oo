@@ -57,7 +57,7 @@ pub fn heal_format_json(ok: Bool, status: String, target: String, guard: String,
 
 fn cli_heal_fail(err: String) -> Result[Int, String] {
     println(heal_format_json(false, "", "", "", "", err));
-    println("ERR " + err);
+    println("ERR\theal\t" + err);
     return Err(err);
 }
 
@@ -93,25 +93,25 @@ pub fn cli_run_heal_json(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &
 pub fn cli_run_heal_plain(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, path: String) -> Result[Int, String] {
     let target: String = if chars_len(path) > 0 { path } else { dir_watcher_autopsy_file() };
     if str_index_of(target, "..") >= 0 {
-        println("ERR path traversal rejected");
+        println("ERR\theal\tpath traversal rejected");
         return Err("path traversal rejected");
     }
     if !path_exists(fs, target) {
         let msg: String = "autopsy file not found: " + target;
-        println("ERR " + msg);
+        println("ERR\theal\t" + msg);
         return Err(msg);
     }
     let rd: Result[String, String] = dir_watcher_read_autopsy(fs, target);
     if rd.is_err() {
         let e: String = match rd { Ok(_) => "", Err(m) => m };
-        println("ERR " + e);
+        println("ERR\theal\t" + e);
         return Err(e);
     }
     let json: String = match rd { Ok(s) => s, Err(_) => "" };
     let r_heal: Result[String, String] = heal_from_autopsy_json(p, fs, fw, env, json);
     if r_heal.is_err() {
         let e2: String = match r_heal { Ok(_) => "", Err(m) => m };
-        println("ERR " + e2);
+        println("ERR\theal\t" + e2);
         return Err(e2);
     }
     let report: String = match r_heal { Ok(s) => s, Err(_) => "" };
@@ -130,7 +130,7 @@ pub fn cli_run_heal_args(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &
         if a == "--json" { as_json = true; }
         else if str_starts_with(a, "--") {
             let msg: String = "unknown heal flag: " + a;
-            println("ERR " + msg);
+            println("ERR\theal\t" + msg);
             return Err(msg);
         }
         else if chars_len(pth) == 0 { pth = a; }

@@ -28,7 +28,7 @@ import "cli_dispatch_more.oo";
 import "cli_help.oo";
 
 fn cli_err(msg: String) -> Result[Int, String] {
-    let line: String = "ERR " + msg;
+    let line: String = "ERR\tbb\t" + msg;
     println(line);
     return Err(msg);
 }

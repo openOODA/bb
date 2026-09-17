@@ -14,13 +14,13 @@ import "diff/compiler_runner.oo";
 import "diff/em_diff.oo";
 
 fn inspect_err(msg: String) -> Result[Int, String] {
-    let line: String = "ERR " + msg;
+    let line: String = "ERR\tinspect\t" + msg;
     println(line);
     return Err(msg);
 }
 
 fn inspect_residual(msg: String) -> Result[Int, String] {
-    let line: String = "ERR " + msg;
+    let line: String = "ERR\tinspect\t" + msg;
     println(line);
     process_exit(2);
     return Err(msg);

@@ -13,8 +13,7 @@ import "record/flight_capsule.oo";
 import "record/flight_replay.oo";
 
 fn cli_capsule_err(msg: String) -> Result[Int, String] {
-    print("ERR ");
-    println(msg);
+    println("ERR\tcapsule\t" + msg);
     return Err(msg);
 }
 
