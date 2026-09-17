@@ -89,7 +89,7 @@ pub fn capsule_deserialize(raw: String) -> Result[CapsuleData, String] {
     let stored_crc: Int = autopsy_json_int(raw, "crc32");
     if chars_len(digest) == 0 { digest = stored_crc.to_string(); }
 
-    let v_res: Result[Bool, String] = crypto_agile_verify(algo, payload_str, digest, signer);
+    let v_res: Result[Int, String] = crypto_agile_verify(algo, payload_str, digest, signer);
     if v_res.is_err() {
         let e_v: String = match v_res { Ok(_) => "", Err(m) => "" + m };
         return Err("capsule integrity verification failed (verified: FAILED): " + e_v);

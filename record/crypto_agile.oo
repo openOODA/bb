@@ -156,7 +156,7 @@ fn hex_to_limbs_local(hex: String) -> List[Int] {
     return out;
 }
 
-pub fn crypto_agile_verify(algo: String, payload: String, digest: String, signer_pk: String) -> Result[Bool, String] {
+pub fn crypto_agile_verify(algo: String, payload: String, digest: String, signer_pk: String) -> Result[Int, String] {
     let norm: String = crypto_agile_normalize_algo(algo);
     if chars_len(digest) == 0 {
         return Err("crypto_agile_verify: empty digest");
@@ -164,35 +164,35 @@ pub fn crypto_agile_verify(algo: String, payload: String, digest: String, signer
     if norm == "crc32" {
         let computed: Int = capsule_crc32(payload);
         if computed.to_string() == digest {
-            return Ok(true);
+            return Ok(1);
         }
         return Err("checksum mismatch (expected " + digest + ", computed " + computed.to_string() + ")");
     }
     if norm == "sha256" {
         let computed_h: String = crypto_sha256_internal(payload);
         if computed_h == digest {
-            return Ok(true);
+            return Ok(1);
         }
         return Err("sha256 mismatch: expected " + digest + ", got " + computed_h);
     }
     if norm == "blake3" {
         let computed_h: String = blake3(payload);
         if computed_h == digest {
-            return Ok(true);
+            return Ok(1);
         }
         return Err("blake3 mismatch: expected " + digest + ", got " + computed_h);
     }
     if norm == "sha3" {
         let computed_h: String = sha3_256(payload);
         if computed_h == digest {
-            return Ok(true);
+            return Ok(1);
         }
         return Err("sha3 mismatch: expected " + digest + ", got " + computed_h);
     }
     if norm == "sha512" {
         let computed_h: String = crypto_sha512_internal(payload);
         if computed_h == digest {
-            return Ok(true);
+            return Ok(1);
         }
         return Err("sha512 mismatch: expected " + digest + ", got " + computed_h);
     }
@@ -234,7 +234,7 @@ pub fn crypto_agile_verify(algo: String, payload: String, digest: String, signer
         if exp_sig != digest {
             return Err("ed25519 mismatch: expected " + digest + ", got " + exp_sig);
         }
-        return Ok(true);
+        return Ok(1);
     }
     return Err("crypto_agile_verify: unsupported algorithm: " + algo);
 }
