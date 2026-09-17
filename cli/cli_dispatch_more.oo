@@ -17,7 +17,7 @@ import "cli_bench.oo";
 import "cli_sandbox_status.oo";
 import "cli_swarm_status.oo";
 
-pub fn cli_dispatch_more(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, time: &TimeCap, thread: &ThreadCap, args: List[String]) -> Result<Int, String] {
+pub fn cli_dispatch_more(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, time: &TimeCap, thread: &ThreadCap, args: List[String]) -> Result[Int, String] {
     let n: Int = list_len(args);
     if n == 0 {
         return Err("cli_dispatch_more: no subcommand");

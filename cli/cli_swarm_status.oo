@@ -18,7 +18,7 @@ fn swarm_fallback_manifest() -> SwarmManifest {
     return SwarmManifest { name: "swarm", strategy: 0, max_restarts: 3, roles: roles, initial_task: "" };
 }
 
-pub fn cli_run_swarm_status(thread: &ThreadCap, fs: &FsReadCap, args: List[String]) -> Result<Int, String> {
+pub fn cli_run_swarm_status(thread: &ThreadCap, fs: &FsReadCap, args: List[String]) -> Result[Int, String] {
     let n: Int = list_len(args);
     let mut manifest_path: String = "";
     let mut i: Int = 0;

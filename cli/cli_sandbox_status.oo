@@ -16,7 +16,7 @@
 
 import "std/sec/sandbox/status.oo";
 
-pub fn cli_run_sandbox_status(args: List[String]) -> Result<Int, String] {
+pub fn cli_run_sandbox_status(args: List[String]) -> Result[Int, String] {
     let n: Int = list_len(args);
     let mut i: Int = 0;
     while i < n {

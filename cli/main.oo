@@ -11,7 +11,7 @@
 
 import "cli_run.oo";
 
-pub fn main(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, time: &TimeCap, thread: &ThreadCap, args: List[String]) -> Result<Int, String] {
+pub fn main(p: &ProcessCap, fs: &FsReadCap, fw: &FsWriteCap, env: &EnvCap, time: &TimeCap, thread: &ThreadCap, args: List[String]) -> Result[Int, String] {
     let r: Result[Int, String] = cli_dispatch(p, fs, fw, env, time, thread, args);
     match r {
         Ok(c) => {

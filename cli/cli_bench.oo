@@ -78,9 +78,9 @@ pub fn cli_run_bench(p: &ProcessCap, fs: &FsReadCap, env: &EnvCap, time: &TimeCa
             return Err("build failed");
         }
         let r0: Int = now_ms(time);
-        let rr: Result<String, String> = sys_exec(p, bout);
+        let rr: Result[String, String] = sys_exec(p, bout);
         let r1: Int = now_ms(time);
-        let _del: Result<String, String> = sys_exec(p, "rm", "-f", bout);
+        let _del: Result[String, String] = sys_exec(p, "rm", "-f", bout);
         let mut rms: Int = r1 - r0;
         if rms < 0 { rms = 0; }
         println("blackbox bench: run " + path + " " + rms.to_string() + "ms");

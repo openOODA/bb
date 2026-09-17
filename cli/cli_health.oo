@@ -13,7 +13,7 @@
 
 import "std/fs/process/env.oo";
 
-pub fn cli_run_health(fr: &FsReadCap, env: &EnvCap, args: List[String]) -> Result<Int, String] {
+pub fn cli_run_health(fr: &FsReadCap, env: &EnvCap, args: List[String]) -> Result[Int, String] {
     println("blackbox health: ok");
 
     let mut compiler_here: String = "no";
